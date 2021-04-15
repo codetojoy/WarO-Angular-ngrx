@@ -1,38 +1,66 @@
 import { Injectable } from "@angular/core";
+import { Store } from "@ngrx/store";
 import { Subject } from "rxjs";
 import { Deck } from "../model/deck.model";
 import { Card, Hand, Kitty } from "../model/hand.model";
 import { Bid, Player, Players } from "../model/player.model";
 import { Table } from "../model/table.model";
+import { ConfigService } from "../service/config.service";
+import * as fromApp from "../store/app.reducer";
 import { AuditService } from "./audit.service";
-import { ConfigService } from "./config.service";
+
+/*
+import { Store } from "@ngrx/store";
+import * as fromApp from "../store/app.reducer";
+*/
 
 @Injectable()
 export class DealerService {
   private table: Table;
   tableChanged: Subject<Table> = new Subject<Table>();
   statusChanged: Subject<string> = new Subject<string>();
+  numCards: number;
+  numCardsInHand: number;
+  maxCard: number;
+  currentTransparencyMode: boolean;
 
-  constructor(private auditService: AuditService, private configService: ConfigService) {
+  constructor(
+    private auditService: AuditService,
+    private configService: ConfigService,
+    private store: Store<fromApp.AppState>
+  ) {
+    /*
     this.configService.transparencyModeChanged.subscribe((value: boolean) => {
       this.table.setTransparencyMode(value);
       this.tableChanged.next(this.table);
     });
+    */
+    this.store.select("config").subscribe((state) => {
+      this.numCards = state.numCards;
+      const numPlayers = this.configService.getPlayers().length;
+      this.numCardsInHand = this.numCards / (numPlayers + 1);
+      this.maxCard = this.numCards;
+
+      if (this.table && this.currentTransparencyMode != state.isTransparentMode) {
+        this.table.setTransparencyMode(state.isTransparentMode);
+        this.tableChanged.next(this.table);
+        this.currentTransparencyMode = state.isTransparentMode;
+      }
+    });
   }
 
-  emitTableChanged(): void {
+  private emitTableChanged(): void {
     this.auditService.audit(this.table);
     this.tableChanged.next(this.table);
   }
 
   newGame() {
     console.log(`TRACER DealerService newGame`);
-    const numCards: number = this.configService.getNumCards();
-    const numCardsInHand: number = this.configService.getNumCardsInHand();
+    // const numCardsInHand: number = this.configService.getNumCardsInHand();
 
-    let deck: Deck = new Deck(numCards);
+    let deck: Deck = new Deck(this.numCards);
     deck.shuffle();
-    let hands: Hand[] = this.dealHands(deck.getCards(), numCardsInHand);
+    let hands: Hand[] = this.dealHands(deck.getCards(), this.numCardsInHand);
     hands.forEach((hand) => console.log(`TRACER hand: ${hand.toString()}`));
 
     this.table = this.assignToTable(hands, this.configService.getPlayers());
@@ -129,7 +157,7 @@ export class DealerService {
     if (isUser) {
       bid = player.makeUserBid(userCard);
     } else {
-      bid = player.getBid(this.table.getPrizeCard(), this.configService.getMaxCard());
+      bid = player.getBid(this.table.getPrizeCard(), this.maxCard);
     }
 
     return bid;

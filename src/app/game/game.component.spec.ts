@@ -1,11 +1,10 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
-
-import { GameComponent } from "./game.component";
-
+import { provideMockStore } from "@ngrx/store/testing";
 import { AuditService } from "../service/audit.service";
 import { ConfigService } from "../service/config.service";
 import { DealerService } from "../service/dealer.service";
 import { StrategyService } from "../service/strategy.service";
+import { GameComponent } from "./game.component";
 
 describe("GameComponent", () => {
   let component: GameComponent;
@@ -14,7 +13,7 @@ describe("GameComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [GameComponent],
-      providers: [AuditService, ConfigService, DealerService, StrategyService],
+      providers: [AuditService, ConfigService, DealerService, StrategyService, provideMockStore({})],
     }).compileComponents();
   });
 

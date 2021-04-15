@@ -1,15 +1,21 @@
 import { Injectable } from "@angular/core";
+import { Store } from "@ngrx/store";
 import { Table } from "../model/table.model";
-import { ConfigService } from "./config.service";
+import * as fromApp from "../store/app.reducer";
 
 @Injectable()
 export class AuditService {
-  constructor(private configService: ConfigService) {}
+  numCards: number;
+
+  constructor(private store: Store<fromApp.AppState>) {
+    this.store.select("config").subscribe((state) => {
+      this.numCards = state.numCards;
+    });
+  }
 
   audit(table: Table): void {
     console.log(`TRACER AS table: ${table.toString()}`);
-    let numCards: number = this.configService.getNumCards();
-    let expectedSum: number = (numCards * (numCards + 1)) / 2;
+    let expectedSum: number = (this.numCards * (this.numCards + 1)) / 2;
     let actualSum: number = table.getDiscardTotalForAudit();
 
     if (table.getPrizeCard()) {

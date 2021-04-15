@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-
-import { ConfigService } from "../service/config.service";
+import { Store } from "@ngrx/store";
+import * as ConfigActions from "../config/store/config.actions";
 import { DealerService } from "../service/dealer.service";
+import * as fromApp from "../store/app.reducer";
 
 @Component({
   selector: "app-controlpanel",
@@ -9,7 +10,7 @@ import { DealerService } from "../service/dealer.service";
   styleUrls: ["./controlpanel.component.css"],
 })
 export class ControlpanelComponent implements OnInit {
-  constructor(private configService: ConfigService, private dealerService: DealerService) {}
+  constructor(private store: Store<fromApp.AppState>, private dealerService: DealerService) {}
 
   ngOnInit(): void {}
 
@@ -20,6 +21,8 @@ export class ControlpanelComponent implements OnInit {
 
   onToggleTransparency(): void {
     console.log(`TRACER ControlPanel: ToggleTransparency`);
-    this.configService.toggleTransparency();
+    // this.configService.toggleTransparency();
+    let action = new ConfigActions.ToggleTransparencyMode();
+    this.store.dispatch(action);
   }
 }

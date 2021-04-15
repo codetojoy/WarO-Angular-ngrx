@@ -1,22 +1,33 @@
-import { ComponentFixture, TestBed } from "@angular/core/testing";
-
-import { Card, Hand } from "../model/hand.model";
-import { Deck } from "../model/deck.model";
-import { Strategy, NextCard } from "../model/strategy.model";
-import { Player, Players, Bid } from "../model/player.model";
+import { TestBed } from "@angular/core/testing";
+import { MockStore, provideMockStore } from "@ngrx/store/testing";
+import { Card } from "../model/hand.model";
+import { Bid, Player } from "../model/player.model";
+import * as fromApp from "../store/app.reducer";
+import { AuditService } from "./audit.service";
 import { ConfigService } from "./config.service";
 import { DealerService } from "./dealer.service";
 import { StrategyService } from "./strategy.service";
-import { AuditService } from "./audit.service";
 
 describe("Dealer Service", () => {
   let dealerService: DealerService;
+  const initialState = fromApp.initialState;
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        // any modules needed
+      ],
+      providers: [
+        provideMockStore({}),
+        // other providers
+      ],
+    });
+
+    let store = TestBed.inject(MockStore);
     let strategyService: StrategyService = new StrategyService();
     let configService: ConfigService = new ConfigService(strategyService);
-    let auditService: AuditService = new AuditService(configService);
-    dealerService = new DealerService(auditService, configService);
+    let auditService: AuditService = new AuditService(store);
+    dealerService = new DealerService(auditService, configService, store);
   });
 
   function c(value: number): Card {
