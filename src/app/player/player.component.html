@@ -1,0 +1,14 @@
+<p>name: {{ player.name }}</p>
+<p>stats: {{ player.getPlayerStats().toString() }}</p>
+<div *ngIf="player.hasHand()">
+  <div *ngIf="player.getIsInteractive(); else notInteractive">
+    <button class="btn btn-primary" *ngFor="let card of player.getCards()" (click)="onPlayRound(card)">
+      {{ card.getDisplay(player.getIsTransparent()) }}
+    </button>
+  </div>
+  <ng-template #notInteractive>
+    <button class="btn btn-primary" disabled *ngFor="let card of player.getCards()">
+      {{ card.getDisplay(player.getIsTransparent()) }}
+    </button>
+  </ng-template>
+</div>

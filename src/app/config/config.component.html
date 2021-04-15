@@ -1,0 +1,11 @@
+<div class="col-sm-5 form-group">
+  <label for="numCards">Num Cards</label>
+  <input type="number" [(ngModel)]="numCards" />
+</div>
+<div class="row">
+  <div class="col-xs-12">
+    <app-player-config-item *ngFor="let player of players" [player]="player"></app-player-config-item>
+  </div>
+</div>
+
+<button class="btn btn-primary" (click)="onSave()">Save</button>

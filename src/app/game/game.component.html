@@ -1,0 +1,23 @@
+<!--
+<app-controlpanel></app-controlpanel> <app-game></app-game>
+-->
+<div class="container">
+  <div class="row">
+    <app-controlpanel></app-controlpanel>
+  </div>
+  <div class="row">
+    <p>status: {{ status }}</p>
+  </div>
+  <div class="row" *ngIf="table.getIsInPlay()">
+    <p>prize card:</p>
+    <button class="btn btn-warning" disabled>{{ table.getPrizeCard().value }}</button>
+  </div>
+  <div class="row" *ngIf="table.getIsInPlay()">
+    <p>kitty:</p>
+    <button class="btn btn-warning" disabled *ngFor="let card of table.kitty.getCards()">
+      {{ card.getDisplay(table.getIsTransparent()) }}
+    </button>
+  </div>
+</div>
+<!-- maybe we pass this in? -->
+<app-players [players]="table.players"></app-players>
