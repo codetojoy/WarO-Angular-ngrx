@@ -12,14 +12,15 @@ npm install --save bootstrap@3
 
 ### TODO
 
+* clear player stats on new game
 * APR 2021
     - fix tests ??? 
     - config state needs players and the ancillary computations
     - does game/table state make sense?
+        - huge re-design
 * enum for strategy type
 * error handling
 * review constants 
-* clear player stats on new game
 * audit service issue on game #2
 * CRUD ops for players in config area
 * proper tests

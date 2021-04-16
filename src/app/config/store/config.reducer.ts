@@ -29,7 +29,6 @@ export function configReducer(state: State = initialState, action: Action) {
         maxCard: maxCard,
       };
     case ConfigActions.TOGGLE_TRANSPARENCY_MODE:
-      const updateTrasparentModeAction = action as ConfigActions.ToggleTransparencyMode;
       const isTransparentMode = !state.isTransparentMode;
       return {
         ...state,
