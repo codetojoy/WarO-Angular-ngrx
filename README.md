@@ -12,7 +12,6 @@ npm install --save bootstrap@3
 
 ### TODO
 
-* clear player stats on new game
 * APR 2021
     - fix tests ??? 
     - config state needs players and the ancillary computations
@@ -31,3 +30,4 @@ npm install --save bootstrap@3
 * revisit RxJS
 * more strategies
 * remote api strategy 
+* X - clear player stats on new game

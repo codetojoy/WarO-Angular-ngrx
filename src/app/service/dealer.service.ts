@@ -29,12 +29,6 @@ export class DealerService {
     private configService: ConfigService,
     private store: Store<fromApp.AppState>
   ) {
-    /*
-    this.configService.transparencyModeChanged.subscribe((value: boolean) => {
-      this.table.setTransparencyMode(value);
-      this.tableChanged.next(this.table);
-    });
-    */
     this.store.select("config").subscribe((state) => {
       this.numCards = state.numCards;
       const numPlayers = this.configService.getPlayers().length;
@@ -63,7 +57,9 @@ export class DealerService {
     let hands: Hand[] = this.dealHands(deck.getCards(), this.numCardsInHand);
     hands.forEach((hand) => console.log(`TRACER hand: ${hand.toString()}`));
 
-    this.table = this.assignToTable(hands, this.configService.getPlayers());
+    const players = this.configService.getPlayers();
+    players.forEach((player) => player.clearStatsForNewGame());
+    this.table = this.assignToTable(hands, players);
     this.table.assignPrizeCard();
     this.emitTableChanged();
   }

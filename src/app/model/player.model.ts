@@ -63,6 +63,10 @@ export class Player {
     return bid;
   }
 
+  clearStatsForNewGame(): void {
+    this.playerStats.clear();
+  }
+
   getPlayerStats(): PlayerStats {
     return this.playerStats;
   }
