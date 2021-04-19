@@ -17,7 +17,7 @@ export const initialState: State = {
 };
 
 export function configReducer(state: State = initialState, action: Action) {
-  console.log(`TRACER 15-APR config reducer ${action.type}`);
+  console.log(`TRACER 19-APR config reducer ${action.type}`);
   switch (action.type) {
     case ConfigActions.UPDATE_NUM_CARDS:
       const updateNumCardsAction = action as ConfigActions.UpdateNumCards;
@@ -33,6 +33,13 @@ export function configReducer(state: State = initialState, action: Action) {
       return {
         ...state,
         isTransparentMode: isTransparentMode,
+      };
+    case ConfigActions.TEST_ACTION:
+      const testAction = action as ConfigActions.TestAction;
+      const payload = testAction.payload;
+      console.log(`TRACER 19-APR testAction.payload: ${payload}`);
+      return {
+        ...state,
       };
     default:
       return state;

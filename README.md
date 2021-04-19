@@ -2,6 +2,8 @@
 
 * simple use of ngrx in the config part of WarO
     - includes reducer-actions and effects
+    - actions: UpdateNumCards, ToggleTransparency, Test
+    - ToggleTransparency fires Test as a side-effect
 * note:
     - UI is terrible
     - tests do not run 
