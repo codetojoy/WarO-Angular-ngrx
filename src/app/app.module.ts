@@ -17,6 +17,9 @@ import { DealerService } from "./service/dealer.service";
 import { StrategyService } from "./service/strategy.service";
 import { appReducer } from "./store/app.reducer";
 
+import { EffectsModule } from "@ngrx/effects";
+import { ConfigEffects } from "./config/store/config.effects";
+
 const appRoutes: Routes = [
   { path: "", component: GameComponent },
   { path: "config", component: ConfigComponent },
@@ -38,6 +41,7 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     FormsModule,
     StoreModule.forRoot(appReducer),
+    EffectsModule.forRoot([ConfigEffects]),
   ],
   providers: [AuditService, ConfigService, DealerService, StrategyService],
   bootstrap: [AppComponent],

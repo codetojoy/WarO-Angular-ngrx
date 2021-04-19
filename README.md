@@ -1,3 +1,12 @@
+### Summary
+
+* simple use of ngrx in the config part of WarO
+    - includes reducer-actions and effects
+* note:
+    - UI is terrible
+    - tests do not run 
+    - basic game play is OK 
+
 ### Setup
 
 * in parent dir: `ng new sandbox`
